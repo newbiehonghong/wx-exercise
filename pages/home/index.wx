@@ -1,0 +1,63 @@
+<template>
+    <view>
+        <view wx:for="{{surveys}}" wx:key="id" wx:for-item="survey">
+            <ui-row border-bottom>
+                <ui-col class="text" align="left" vertical-align="middle" space="20">
+                    <ui-row height="30">
+                        <text>{{survey.content}}</text>
+                    </ui-row>
+                    <view>
+                        <ui-check-list label-position="right" options="{{survey.options}}" max="1" data-id="{{survey.id}}" bindchange="doChange"></ui-check-list>
+                    </view>
+                </ui-col>
+            </ui-row>
+        </view>
+
+        <view class="button-row">
+            <button type="primary" bindtap="doSubmit">提交</button>
+        </view> 
+    </view>
+</template>
+
+<script>
+import api from '../../static/utils/api'
+export default {
+    config: {
+        navigationBarTitleText: '调查问卷',
+        backgroundColor: '#F4F4F4',
+        navigationBarTextStyle: 'black'
+    },
+    data: {
+        surveys: [],
+        result: {}
+    },
+    onLoad() {
+        this.setData({surveys: api.getData()})
+    },
+    doChange(e) {
+        var id = e.target.dataset.id;
+        var value = e.detail.value[0];//多选框
+        this.data.result[id] = value;
+    },
+    doSubmit() {
+        console.log(this.data.result);
+    }
+}
+</script>
+
+<style lang="less">
+.text {
+    text {
+        font-size: 16px;
+        color: #313338;
+    }
+    view {
+        color: #9C9FA4;
+        font-size: 12px;
+        .mix-text-overflow();
+    }
+}
+.button-row {
+    padding: 50px;
+}
+</style>
